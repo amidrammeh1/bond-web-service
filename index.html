@@ -1,10 +1,9 @@
 <html>
 <head>
-<title>Bond Web Service Demo</title>
-<link rel="stylesheet" href="bonds.css" />
+<title>Top 10 Restaurants in Seattle</title>
+<link rel="stylesheet" href="css/bond.css"/>
 <style>
 body {font-family:georgia;}
-
 </style>
 <script src="https://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 
@@ -17,14 +16,13 @@ function serverSetup(server,cat){
        url = "api.php?cat=" + cat;
    }else{//server is HTML only - simulate web service
        if(cat == "box"){//box office
-           url = "data/bond-box-office.js";
+           url = "data/restaurant-name.js";
        }else{//year
-           url = "data/bond-year.js"; 
+           url = "data/restaurant-rating.js"; 
        }
    }
    return url;
 }
-
 
 
 $(document).ready(function() {  
@@ -62,60 +60,49 @@ function loadAJAX(cat)
 function toConsole(data)
 {//return data to console for JSON examination
 	console.log(data); //to view,use Chrome console, ctrl + shift + j
-
-	//$("#output").text(JSON.stringify(data));
 }
 
 function bondJSON(data){
 //JSON processing data goes here
-//toConsole(data);
-//#output").text(JSON.stringify(data));
+	//toConsole(data);
+	//$("#output").text(JSON.stringify(data));
 
+	//clear films from previous click
+	$("#restaurants").html("");
 
-    // clear films from previous click
-    $("films").html("");
-// adds title to h3 elment
-    $("#filmtitle").html(data.title);
+	//add title to h3 element
+	$("#filmtitle").html(data.title);
 
-    $.each(data.films,function(i,item){   
-        let text = `
-               <b>Title:</b>: ${item.Title}<br />
-               <b>Film #</b>: ${item.Film}<br />
-               <b>Year</b>: ${item.Year}<br />
-               <b>Bond</b>: ${item.Bond}<br />
-               <b>Box Office</b>: ${item.BoxOffice}<br />
-               <b>Writers</b>: ${item.Writers}<br />
-               <div class="pic"><img src = "thumbnails/${item.Image}" /></div>
+	$.each(data.restaurants,function(i, item){
 
-        
-        
-        
-        
-        `;
+		let text = `
+				
+				<b>Name:</b> ${item.Name}<br />
+				<b>Phone:</b> ${item.Phone}<br />
+				<b>Address:</b> ${item.Address}<br />
+				<b>Rating:</b> ${item.Rating}<br />
+				<b>Cuisine:</b> ${item.Cuisine}<br />
+				<div class="pic" width="200" ><img src="images/${item.Image}"/></div>
+				
+		`;
+		$("<div></div>").html(text).appendTo("#restaurants");
 
-        $("<div></div>").html(text).appendTo("#films");
-
-
-
-    });
-
-
-
-
-
-
+	});
 }
 
 </script>
 </head>
 	<body>
-	<h1>Bond Web Service</h1>
-		<a href="year" class="category">Bond Films By Year</a><br />
-		<a href="box" class="category">Bond Films By International Box Office Totals</a>
-		<h3 id="filmtitle">Title Will Go Here</h3>
-		<div id="films">
-		
+		<div class="heading" style="text-align: center">
+	<h1>Top 10 Restaurants When You Visit Seattle!☀️</h1>
+		<a href="restaurants" class="category">Restaurant By Rating</a><br />
+		<a href="box" class="category">Restaurant By Name</a>
+	</div>
+		<h3 id="filmtitle"></h3>
+		<div id="restaurants">
+
+			</div>
 		</div>
-		<div id="output">Results go here</div>
+		<div id="output"></div>
 	</body>
 </html>
